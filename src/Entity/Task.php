@@ -12,8 +12,14 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\TaskRejectController;
+use App\Controller\TaskStatusController;
+use App\Controller\TaskValidateController;
+use App\Dto\TaskRejectRequest;
+use App\Dto\TaskStatusRequest;
 use App\Enum\TaskStatus;
 use App\Repository\TaskRepository;
+use App\State\TaskCreateProcessor;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -31,12 +37,15 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
         new Get(security: "is_granted('TASK_VIEW', object)"),
         new Post(
             security: "is_granted('ROLE_ADMIN')",
+            processor: TaskCreateProcessor::class,
         ),
         new Put(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN')"),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
         new Post(
             uriTemplate: '/tasks/{id}/status',
+            controller: TaskStatusController::class,
+            input: TaskStatusRequest::class,
             output: Task::class,
             name: 'task_status',
             security: "is_granted('TASK_UPDATE_STATUS', object)",
@@ -47,6 +56,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
         ),
         new Post(
             uriTemplate: '/tasks/{id}/validate',
+            controller: TaskValidateController::class,
             output: Task::class,
             name: 'task_validate',
             security: "is_granted('TASK_VALIDATE', object)",
@@ -57,6 +67,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
         ),
         new Post(
             uriTemplate: '/tasks/{id}/reject',
+            controller: TaskRejectController::class,
+            input: TaskRejectRequest::class,
             output: Task::class,
             name: 'task_reject',
             security: "is_granted('TASK_REJECT', object)",

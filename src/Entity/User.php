@@ -47,18 +47,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'task:read'])]
     #[ApiProperty(writable: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'task:read'])]
     #[Assert\NotBlank]
     #[Assert\Email]
     private string $email = '';
 
     #[ORM\Column(length: 120)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'task:read'])]
     #[Assert\NotBlank]
     #[Assert\Length(max: 120)]
     private string $name = '';
@@ -67,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string>
      */
     #[ORM\Column(type: Types::JSON)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'task:read'])]
     #[Assert\Choice(choices: [self::ROLE_ADMIN, self::ROLE_WORKER], multiple: true)]
     private array $roles = [self::ROLE_WORKER];
 
@@ -81,7 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'task:read'])]
     #[ApiProperty(writable: false)]
     private \DateTimeImmutable $createdAt;
 
