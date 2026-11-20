@@ -22,6 +22,11 @@ final class AppFixtures extends Fixture
         $workerOne = $this->createUser('worker1@taskmanager.local', 'Alice Worker', [User::ROLE_WORKER], 'worker1234');
         $workerTwo = $this->createUser('worker2@taskmanager.local', 'Bob Worker', [User::ROLE_WORKER], 'worker1234');
 
+        for ($i = 0; $i <= 35; $i++) {
+            $worker = $this->createUser('worker.test' . $i . '@taskmanager.local', 'worker' . $i, [User::ROLE_WORKER], 'worker1234');
+            $manager->persist($worker);
+        }
+
         $manager->persist($admin);
         $manager->persist($workerOne);
         $manager->persist($workerTwo);
