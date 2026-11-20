@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Dto\TaskStatusRequest;
-use App\Entity\Task;
 use App\Entity\User;
 use App\Repository\TaskRepository;
 use App\Service\TaskNotifier;
